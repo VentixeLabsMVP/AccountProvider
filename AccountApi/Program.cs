@@ -1,4 +1,5 @@
 using AccountApi.Data;
+using AccountApi.Entities;
 using AccountApi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
+builder.Services.AddHttpClient("VerificationApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7021"); // byt till rätt port
+});
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddDbContext<AppIdentityDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(x => {
+builder.Services.AddIdentity<AppUserEntity, IdentityRole>(x =>
+{
 
-//    x.User.RequireUniqueEmail = true;
-//    x.Password.RequiredLength = 8;
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequiredLength = 8;
 
-//}).AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+}).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddCors(x =>
 {
