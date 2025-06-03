@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpClient("VerificationApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7021"); // byt till rätt port
+    client.BaseAddress = new Uri("https://verificationserviceprovider-ventixe.azurewebsites.net/); // byt till rätt port
 });
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddDbContext<AppIdentityDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
